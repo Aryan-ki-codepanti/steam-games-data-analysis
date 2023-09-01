@@ -1,11 +1,18 @@
-import csv
+import csv,bs4,requests
 
-
+session = requests.session()
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64;6 x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36'}
+ 
 def scrape(app_id):
-    '''
-        yaha likh kanak apna code to scrape <app_id> details and write to a csv
-    '''
-    pass
+        link = "https://store.steampowered.com/app/"+app_id
+        res = session.get(link,headers = headers)
+        res.raise_for_status()
+
+        soup = bs4.BeautifulSoup(res.text,'html.parser')
+        elem1 = soup.select('#genresAndManufacturer')
+        return elem1[0].text.strip()           
+   
+pass
 
 
 def main():
@@ -23,6 +30,7 @@ def main():
             # scrape for app_id
             # scrape(app_id)
             rec = next(reader, False)
+            print(scrape(app_id))
 
 
 main()
