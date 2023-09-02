@@ -1,17 +1,22 @@
-import csv,bs4,requests
+import csv
+import bs4
+import requests
 
 session = requests.session()
-headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64;6 x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36'}
- 
-def scrape(app_id):
-        link = "https://store.steampowered.com/app/"+app_id
-        res = session.get(link,headers = headers)
-        res.raise_for_status()
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64;6 x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36'}
 
-        soup = bs4.BeautifulSoup(res.text,'html.parser')
-        elem1 = soup.select('#genresAndManufacturer')
-        return elem1[0].text.strip()           
-   
+
+def scrape(app_id):
+    link = "https://store.steampowered.com/app/"+app_id
+    res = session.get(link, headers=headers)
+    res.raise_for_status()
+
+    soup = bs4.BeautifulSoup(res.text, 'html.parser')
+    elem1 = soup.select('#genresAndManufacturer')
+    return elem1[0].text.strip()
+
+
 pass
 
 
@@ -30,7 +35,11 @@ def main():
             # scrape for app_id
             # scrape(app_id)
             rec = next(reader, False)
-            print(scrape(app_id))
+            try:
+                print(scrape(app_id))
+            except Exception as e:
+                print(f"ERROR at : {app_id}")
+                print(e)
 
 
 main()
