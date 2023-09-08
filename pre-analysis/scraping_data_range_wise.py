@@ -13,8 +13,6 @@ def scrape(app_id):
     res.raise_for_status()
 
     soup = bs4.BeautifulSoup(res.text, 'html.parser')
-    release_date = soup.select_one('#game_highlights > div.rightcol > div > div.glance_ctn_responsive_left > div.release_date > div.date')
-    
     language_table = soup.find('div', {'id': 'languageTable'})
     language_rows = language_table.find_all('tr')
 
@@ -25,13 +23,25 @@ def scrape(app_id):
         if language_name:
             lang.append(language_name.get_text(strip=True))
 
-    p_review = soup.select_one('#reviews_filter_options > div:nth-child(1) > div.user_reviews_filter_menu_flyout > div > label:nth-child(5) > span')
-    n_review = soup.select_one('#reviews_filter_options > div:nth-child(1) > div.user_reviews_filter_menu_flyout > div > label:nth-child(8) > span')
-    t_review = soup.select_one('#review_histogram_rollup_section > div.user_reviews_summary_bar > div > span:nth-child(3)')
-    ov_review = soup.select_one('#review_histogram_rollup_section > div.user_reviews_summary_bar > div > span.game_review_summary.positive')
-    m_content = soup.select_one('#game_area_content_descriptors > p:nth-child(3)')
-    
-    return[release_date, lang, p_review, n_review, t_review, ov_review, m_content]
+    p_review = soup.select_one(
+        '#reviews_filter_options > div:nth-child(1) > div.user_reviews_filter_menu_flyout > div > label:nth-child(5) > span')
+    n_review = soup.select_one(
+        '#reviews_filter_options > div:nth-child(1) > div.user_reviews_filter_menu_flyout > div > label:nth-child(8) > span')
+    t_review = soup.select_one(
+        '#review_histogram_rollup_section > div.user_reviews_summary_bar > div > span:nth-child(3)')
+    ov_review = soup.select_one(
+        '#review_histogram_rollup_section > div.user_reviews_summary_bar > div > span.game_review_summary.positive')
+    m_content = soup.select_one(
+        '#game_area_content_descriptors > p:nth-child(3)')
+
+    p_review = "" if p_review is None else p_review.get_text()[1:-1]
+    n_review = "" if n_review is None else n_review.get_text()[1:-1]
+    t_review = "" if t_review is None else t_review.get_text()[1:-1].split()[0]
+    ov_review = "" if ov_review is None else ov_review.get_text()
+    m_content = "" if m_content is None else m_content.get_text()
+
+    return [lang, p_review, n_review, t_review, ov_review, m_content]
+
 
 pass
 
@@ -68,4 +78,5 @@ def main(start=0, end=0):
 
 
 # main()
-main(10, 20)
+main(10, 12)
+# main(10, 20)
