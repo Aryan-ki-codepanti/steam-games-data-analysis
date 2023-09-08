@@ -46,15 +46,26 @@ def scrape(app_id):
         '#review_histogram_rollup_section > div.user_reviews_summary_bar > div > span.game_review_summary')
     m_content = soup.select_one(
         '#game_area_content_descriptors > p:nth-child(3)')
-
+    award = soup.select_one(
+        '.steamawards2020_app_banner_header.award_title.small')
+    curator = soup.select_one(
+        '.no_curators_followed'
+    )
+    recent_review = soup.select_one(
+        '.summary_section .game_review_summary.positive + span'
+    )
     # Parsing text and adding checks to avoid  errors for None.<property_access>[()]
     p_review = "" if p_review is None else p_review.get_text()[1:-1]
     n_review = "" if n_review is None else n_review.get_text()[1:-1]
     t_review = "" if t_review is None else t_review.get_text()[1:-1].split()[0]
     ov_review = "" if ov_review is None else ov_review.get_text()
     m_content = "" if m_content is None else m_content.get_text()
+    award = "" if award is None else award.get_text()
+    curator = "" if award is None else curator.get_text().strip()[0]
+    recent_review = "" if award is None else recent_review.get_text()
+    
 
-    return [lang__interface, lang__full_audio, lang__subtitles, p_review, n_review, t_review, ov_review, m_content]
+    return [lang__interface, lang__full_audio, lang__subtitles, p_review, n_review, t_review, ov_review, m_content, award, curator, recent_review]
 
 
 pass
@@ -92,5 +103,5 @@ def main(start=0, end=0):
 
 
 # main()
-main(0, 2)
-# main(10, 20)
+# main(0, 2)
+main(10, 20)
