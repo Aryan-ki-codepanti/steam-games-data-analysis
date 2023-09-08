@@ -43,7 +43,7 @@ def scrape(app_id):
     t_review = soup.select_one(
         '#review_histogram_rollup_section > div.user_reviews_summary_bar > div > span:nth-child(3)')
     ov_review = soup.select_one(
-        '#review_histogram_rollup_section > div.user_reviews_summary_bar > div > span.game_review_summary.positive')
+        '#review_histogram_rollup_section > div.user_reviews_summary_bar > div > span.game_review_summary')
     m_content = soup.select_one(
         '#game_area_content_descriptors > p:nth-child(3)')
 
