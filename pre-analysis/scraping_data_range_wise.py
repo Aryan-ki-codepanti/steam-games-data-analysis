@@ -13,9 +13,25 @@ def scrape(app_id):
     res.raise_for_status()
 
     soup = bs4.BeautifulSoup(res.text, 'html.parser')
-    elem1 = soup.select('#genresAndManufacturer')
-    return elem1[0].text.strip()
+    release_date = soup.select_one('#game_highlights > div.rightcol > div > div.glance_ctn_responsive_left > div.release_date > div.date')
+    
+    language_table = soup.find('div', {'id': 'languageTable'})
+    language_rows = language_table.find_all('tr')
 
+    lang = []
+
+    for row in language_rows:
+        language_name = row.find('td', {'class': 'ellipsis'})
+        if language_name:
+            lang.append(language_name.get_text(strip=True))
+
+    p_review = soup.select_one('#reviews_filter_options > div:nth-child(1) > div.user_reviews_filter_menu_flyout > div > label:nth-child(5) > span')
+    n_review = soup.select_one('#reviews_filter_options > div:nth-child(1) > div.user_reviews_filter_menu_flyout > div > label:nth-child(8) > span')
+    t_review = soup.select_one('#review_histogram_rollup_section > div.user_reviews_summary_bar > div > span:nth-child(3)')
+    ov_review = soup.select_one('#review_histogram_rollup_section > div.user_reviews_summary_bar > div > span.game_review_summary.positive')
+    m_content = soup.select_one('#game_area_content_descriptors > p:nth-child(3)')
+    
+    return[release_date, lang, p_review, n_review, t_review, ov_review, m_content]
 
 pass
 
