@@ -16,12 +16,25 @@ def scrape(app_id):
     language_table = soup.find('div', {'id': 'languageTable'})
     language_rows = language_table.find_all('tr')
 
-    lang = []
+    # three category support
+    lang__interface = []
+    lang__full_audio = []
+    lang__subtitles = []
 
     for row in language_rows:
         language_name = row.find('td', {'class': 'ellipsis'})
+
         if language_name:
-            lang.append(language_name.get_text(strip=True))
+            lang_name = language_name.get_text(strip=True)
+            support_type = row.find_all('td', {'class': 'checkcol'})
+            # extra check
+            if support_type and len(support_type) == 3:
+                if support_type[0].get_text(strip=True):
+                    lang__interface.append(lang_name)
+                if support_type[1].get_text(strip=True):
+                    lang__full_audio.append(lang_name)
+                if support_type[2].get_text(strip=True):
+                    lang__subtitles.append(lang_name)
 
     p_review = soup.select_one(
         '#reviews_filter_options > div:nth-child(1) > div.user_reviews_filter_menu_flyout > div > label:nth-child(5) > span')
@@ -34,13 +47,14 @@ def scrape(app_id):
     m_content = soup.select_one(
         '#game_area_content_descriptors > p:nth-child(3)')
 
+    # Parsing text and adding checks to avoid  errors for None.<property_access>[()]
     p_review = "" if p_review is None else p_review.get_text()[1:-1]
     n_review = "" if n_review is None else n_review.get_text()[1:-1]
     t_review = "" if t_review is None else t_review.get_text()[1:-1].split()[0]
     ov_review = "" if ov_review is None else ov_review.get_text()
     m_content = "" if m_content is None else m_content.get_text()
 
-    return [lang, p_review, n_review, t_review, ov_review, m_content]
+    return [lang__interface, lang__full_audio, lang__subtitles, p_review, n_review, t_review, ov_review, m_content]
 
 
 pass
@@ -78,5 +92,5 @@ def main(start=0, end=0):
 
 
 # main()
-main(10, 12)
+main(0, 2)
 # main(10, 20)
