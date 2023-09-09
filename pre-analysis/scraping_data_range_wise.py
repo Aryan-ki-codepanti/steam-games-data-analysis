@@ -8,6 +8,9 @@ headers = {
 
 
 def scrape(app_id):
+    # parse int to str
+    app_id = str(app_id) if isinstance(app_id, int) else app_id
+
     link = "https://store.steampowered.com/app/"+app_id
     res = session.get(link, headers=headers)
     res.raise_for_status()
@@ -30,7 +33,6 @@ def scrape(app_id):
 
         if language_name:
             lang_name = language_name.get_text(strip=True)
-            print(f"before support {app_id}")
             support_type = row.find_all('td', {'class': 'checkcol'})
             # extra check
             if support_type and len(support_type) == 3:
@@ -41,13 +43,13 @@ def scrape(app_id):
                 if support_type[2].get_text(strip=True):
                     lang__subtitles.append(lang_name)
 
-    p_review = soup.select_one(
+    positive_reviews = soup.select_one(
         '#reviews_filter_options > div:nth-child(1) > div.user_reviews_filter_menu_flyout > div > label:nth-child(5) > span')
-    n_review = soup.select_one(
+    negative_reviews = soup.select_one(
         '#reviews_filter_options > div:nth-child(1) > div.user_reviews_filter_menu_flyout > div > label:nth-child(8) > span')
-    t_review = soup.select_one(
+    total_reviews = soup.select_one(
         '#review_histogram_rollup_section > div.user_reviews_summary_bar > div > span:nth-child(3)')
-    ov_review = soup.select_one(
+    overall_review_summary = soup.select_one(
         '#review_histogram_rollup_section > div.user_reviews_summary_bar > div > span.game_review_summary')
     m_content = soup.select_one(
         '#game_area_content_descriptors > p:nth-child(3)')
@@ -63,10 +65,13 @@ def scrape(app_id):
         '#review_histogram_recent_section > div.user_reviews_summary_bar > div > span:nth-child(3)'
     )
     # Parsing text and adding checks to avoid  errors for None.<property_access>[()]
-    p_review = "" if p_review is None else p_review.get_text()[1:-1]
-    n_review = "" if n_review is None else n_review.get_text()[1:-1]
-    t_review = "" if t_review is None else t_review.get_text()[1:-1].split()[0]
-    ov_review = "" if ov_review is None else ov_review.get_text()
+    positive_reviews = "" if positive_reviews is None else positive_reviews.get_text()[
+        1:-1]
+    negative_reviews = "" if negative_reviews is None else negative_reviews.get_text()[
+        1:-1]
+    total_reviews = "" if total_reviews is None else total_reviews.get_text()[
+        1:-1].split()[0]
+    overall_review_summary = "" if overall_review_summary is None else overall_review_summary.get_text()
     m_content = "" if m_content is None else m_content.get_text()
     award = "" if award is None else award.get_text()
     curator = "" if curator is None else curator.get_text().strip()[0]
@@ -80,7 +85,7 @@ def scrape(app_id):
     recent_review_count = "" if recent_review_list is None or not recent_review_list[
         0] else recent_review_list[1][1:-1].split()[0]
 
-    return [lang__interface, lang__full_audio, lang__subtitles, p_review, n_review, t_review, ov_review, m_content, award, curator, recent_review_summary, recent_review_count]
+    return [lang__interface, lang__full_audio, lang__subtitles, positive_reviews, negative_reviews, total_reviews, overall_review_summary, m_content, award, curator, recent_review_summary, recent_review_count]
 
 
 pass
@@ -119,4 +124,5 @@ def main(start=0, end=0):
 
 # main()
 # main(0, 2)
-main(1000, 1001)
+# main(1000, 1001)
+print(scrape(730))
