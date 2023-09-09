@@ -14,18 +14,23 @@ def scrape(app_id):
 
     soup = bs4.BeautifulSoup(res.text, 'html.parser')
     language_table = soup.find('div', {'id': 'languageTable'})
-    language_rows = language_table.find_all('tr')
 
     # three category support
     lang__interface = []
     lang__full_audio = []
     lang__subtitles = []
 
+    # handle when language table is none
+
+    language_rows = [] if language_table is None else language_table.find_all(
+        'tr')
+
     for row in language_rows:
         language_name = row.find('td', {'class': 'ellipsis'})
 
         if language_name:
             lang_name = language_name.get_text(strip=True)
+            print(f"before support {app_id}")
             support_type = row.find_all('td', {'class': 'checkcol'})
             # extra check
             if support_type and len(support_type) == 3:
@@ -64,11 +69,18 @@ def scrape(app_id):
     ov_review = "" if ov_review is None else ov_review.get_text()
     m_content = "" if m_content is None else m_content.get_text()
     award = "" if award is None else award.get_text()
-    curator = "" if award is None else curator.get_text().strip()[0]
-    recent_review_summary = "" if award is None else recent_review_summary.get_text().strip()[16:]
-    # recent_review_count = "" if award is None else recent_review_count.get_text()
+    curator = "" if curator is None else curator.get_text().strip()[0]
 
-    return [lang__interface, lang__full_audio, lang__subtitles, p_review, n_review, t_review, ov_review, m_content, award, curator, recent_review_summary]
+    # 'Mostly Negative\n(146 reviews)'
+    # recent review parsing
+    recent_review_list = None if recent_review_summary is None else recent_review_summary.get_text().strip()[
+        16:].split('\n')
+    recent_review_summary = "" if recent_review_list is None or not recent_review_list[
+        0] else recent_review_list[0]
+    recent_review_count = "" if recent_review_list is None or not recent_review_list[
+        0] else recent_review_list[1][1:-1].split()[0]
+
+    return [lang__interface, lang__full_audio, lang__subtitles, p_review, n_review, t_review, ov_review, m_content, award, curator, recent_review_summary, recent_review_count]
 
 
 pass
@@ -107,4 +119,4 @@ def main(start=0, end=0):
 
 # main()
 # main(0, 2)
-main(10, 20)
+main(1000, 1001)
