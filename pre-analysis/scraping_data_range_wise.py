@@ -24,7 +24,6 @@ def scrape(app_id):
     lang__subtitles = []
 
     # handle when language table is none
-
     language_rows = [] if language_table is None else language_table.find_all(
         'tr')
 
@@ -34,6 +33,7 @@ def scrape(app_id):
         if language_name:
             lang_name = language_name.get_text(strip=True)
             support_type = row.find_all('td', {'class': 'checkcol'})
+
             # extra check
             if support_type and len(support_type) == 3:
                 if support_type[0].get_text(strip=True):
@@ -76,7 +76,6 @@ def scrape(app_id):
     award = "" if award is None else award.get_text()
     curator = "" if curator is None else curator.get_text().strip()[0]
 
-    # 'Mostly Negative\n(146 reviews)'
     # recent review parsing
     recent_review_list = None if recent_review_summary is None else recent_review_summary.get_text().strip()[
         16:].split('\n')
@@ -86,9 +85,6 @@ def scrape(app_id):
         0] else recent_review_list[1][1:-1].split()[0]
 
     return [lang__interface, lang__full_audio, lang__subtitles, positive_reviews, negative_reviews, total_reviews, overall_review_summary, m_content, award, curator, recent_review_summary, recent_review_count]
-
-
-pass
 
 
 # inclusive both , 0 based
