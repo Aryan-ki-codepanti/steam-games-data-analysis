@@ -51,8 +51,11 @@ def scrape(app_id):
     curator = soup.select_one(
         '.no_curators_followed'
     )
-    recent_review = soup.select_one(
-        '.summary_section .game_review_summary.positive + span'
+    recent_review_summary = soup.select_one(
+        '#review_histogram_recent_section > div.user_reviews_summary_bar > div'
+    )
+    recent_review_count = soup.select_one(
+        '#review_histogram_recent_section > div.user_reviews_summary_bar > div > span:nth-child(3)'
     )
     # Parsing text and adding checks to avoid  errors for None.<property_access>[()]
     p_review = "" if p_review is None else p_review.get_text()[1:-1]
@@ -62,10 +65,10 @@ def scrape(app_id):
     m_content = "" if m_content is None else m_content.get_text()
     award = "" if award is None else award.get_text()
     curator = "" if award is None else curator.get_text().strip()[0]
-    recent_review = "" if award is None else recent_review.get_text()
-    
+    recent_review_summary = "" if award is None else recent_review_summary.get_text().strip()[16:]
+    # recent_review_count = "" if award is None else recent_review_count.get_text()
 
-    return [lang__interface, lang__full_audio, lang__subtitles, p_review, n_review, t_review, ov_review, m_content, award, curator, recent_review]
+    return [lang__interface, lang__full_audio, lang__subtitles, p_review, n_review, t_review, ov_review, m_content, award, curator, recent_review_summary]
 
 
 pass
