@@ -1,4 +1,4 @@
-from utils import EMPTY_VALUE
+from utils import EMPTY_VALUE, parse__requirements_html
 import requests
 import json
 import csv
@@ -91,9 +91,13 @@ def fetch_users(app_id):
                 mac_flag = app_details["platforms"].get("mac", EMPTY_VALUE)
                 linux_flag = app_details["platforms"].get("linux", EMPTY_VALUE)
 
-            # TODO : System requirements
+            pc_requirements_html = EMPTY_VALUE if "pc_requirements" not in app_details or "minimum" not in app_details[
+                "pc_requirements"] else app_details["pc_requirements"]["minimum"]
 
-            return [title, initial_price, final_price, discount_percent, developers, publishers, genres, categories, required_age, achievements, release_date, metacritic_score, dlc_flag, win_flag, mac_flag, linux_flag]
+            pc_requirements = parse__requirements_html(pc_requirements_html)
+
+            # os, processor , memory , graphics , directX , storage
+            return [title, initial_price, final_price, discount_percent, developers, publishers, genres, categories, required_age, achievements, release_date, metacritic_score, dlc_flag, win_flag, mac_flag, linux_flag] + pc_requirements
 
         return EMPTY_VALUE
     except Exception as e:
@@ -112,12 +116,14 @@ def main(n=1):
             id = rec[0]
             print(id)
             pprint(fetch_users(id))
+            fetch_users(id)
             print('\n\n\n')
 
             rec = next(reader)
 
 
 if __name__ == "__main__":
-    main(3)
+    main(6)
     pprint(fetch_users(app_id=730))
     pprint(fetch_users(app_id=1097880))
+
