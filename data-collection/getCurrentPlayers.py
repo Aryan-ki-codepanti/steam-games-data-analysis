@@ -1,3 +1,4 @@
+from utils import EMPTY_VALUE
 import requests
 import json
 import csv
@@ -14,11 +15,11 @@ def fetch_current_players(app_id):
             data = response_API.text
             parse_json = json.loads(data)
             return parse_json['response']['player_count']
-        return "null"
+        return EMPTY_VALUE
 
     except Exception as e:
         print(f"Exception (FETCH_CURRENT_PLAYERS) at {app_id} , \n{e}")
-        return "null"
+        return EMPTY_VALUE
 
 # 25s -> 50reqs
 
@@ -37,4 +38,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    print(fetch_current_players(730))

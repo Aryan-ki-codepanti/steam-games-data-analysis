@@ -1,3 +1,4 @@
+from utils import EMPTY_VALUE
 import csv
 import bs4
 import requests
@@ -71,23 +72,23 @@ def scrape(app_id):
         '#review_histogram_recent_section > div.user_reviews_summary_bar > div > span:nth-child(3)'
     )
     # Parsing text and adding checks to avoid  errors for None.<property_access>[()]
-    positive_reviews = "" if positive_reviews is None else positive_reviews.get_text()[
+    positive_reviews = EMPTY_VALUE if positive_reviews is None else positive_reviews.get_text()[
         1:-1]
-    negative_reviews = "" if negative_reviews is None else negative_reviews.get_text()[
+    negative_reviews = EMPTY_VALUE if negative_reviews is None else negative_reviews.get_text()[
         1:-1]
-    total_reviews = "" if total_reviews is None else total_reviews.get_text()[
+    total_reviews = EMPTY_VALUE if total_reviews is None else total_reviews.get_text()[
         1:-1].split()[0]
-    overall_review_summary = "" if overall_review_summary is None else overall_review_summary.get_text()
-    m_content = "" if m_content is None else m_content.get_text()
-    award = "" if award is None else award.get_text()
-    curator = "" if curator is None else curator.get_text().strip()[0]
+    overall_review_summary = EMPTY_VALUE if overall_review_summary is None else overall_review_summary.get_text()
+    m_content = EMPTY_VALUE if m_content is None else m_content.get_text()
+    award = EMPTY_VALUE if award is None else award.get_text()
+    curator = EMPTY_VALUE if curator is None else curator.get_text().strip()[0]
 
     # recent review parsing
     recent_review_list = None if recent_review_summary is None else recent_review_summary.get_text().strip()[
         16:].split('\n')
-    recent_review_summary = "" if recent_review_list is None or not recent_review_list[
+    recent_review_summary = EMPTY_VALUE if recent_review_list is None or not recent_review_list[
         0] else recent_review_list[0]
-    recent_review_count = "" if recent_review_list is None or not recent_review_list[
+    recent_review_count = EMPTY_VALUE if recent_review_list is None or not recent_review_list[
         0] else recent_review_list[1][1:-1].split()[0]
 
     return [lang__interface, lang__full_audio, lang__subtitles, positive_reviews, negative_reviews, total_reviews, overall_review_summary, m_content, award, curator, recent_review_summary, recent_review_count]

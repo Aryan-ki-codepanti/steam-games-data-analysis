@@ -1,2 +1,4 @@
 /data/games.csv
 games.csv
+__pycache__
+.vscode
