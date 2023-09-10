@@ -43,6 +43,12 @@ def scrape(app_id):
                 if support_type[2].get_text(strip=True):
                     lang__subtitles.append(lang_name)
 
+    # default english
+    lang__interface = ["English"] if not lang__interface else lang__interface
+    lang__full_audio = [
+        "English"] if not lang__full_audio else lang__full_audio
+    lang__subtitles = ["English"] if not lang__subtitles else lang__subtitles
+
     positive_reviews = soup.select_one(
         '#reviews_filter_options > div:nth-child(1) > div.user_reviews_filter_menu_flyout > div > label:nth-child(5) > span')
     negative_reviews = soup.select_one(
@@ -120,5 +126,5 @@ def main(start=0, end=0):
 
 # main()
 # main(0, 2)
-# main(1000, 1001)
+main(1000, 1004)
 # print(scrape(730))
