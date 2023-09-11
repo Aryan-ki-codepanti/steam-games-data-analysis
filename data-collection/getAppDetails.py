@@ -6,6 +6,7 @@ import csv
 # development
 from pprint import pprint
 
+EMPTY_ARRAY = [EMPTY_VALUE] * 22
 
 def fetch_app_details(app_id):
 
@@ -20,7 +21,7 @@ def fetch_app_details(app_id):
 
             # check valid response
             if not app_details["success"]:
-                return EMPTY_VALUE
+                return EMPTY_ARRAY
 
             app_details = app_details["data"]
 
@@ -99,10 +100,10 @@ def fetch_app_details(app_id):
             # os, processor , memory , graphics , directX , storage
             return [title, initial_price, final_price, discount_percent, developers, publishers, genres, categories, required_age, achievements, release_date, metacritic_score, dlc_flag, win_flag, mac_flag, linux_flag] + pc_requirements
 
-        return EMPTY_VALUE
+        return EMPTY_ARRAY
     except Exception as e:
         print(f"Exception at {e}")
-        return EMPTY_VALUE
+        return EMPTY_ARRAY
 
 # 25s -> 50reqs
 

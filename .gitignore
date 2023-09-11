@@ -3,3 +3,5 @@ games.csv
 __pycache__
 .vscode
 test.json
+fetched-data/
+prsnl_test/

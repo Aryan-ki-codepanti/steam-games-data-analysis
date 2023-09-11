@@ -7,6 +7,8 @@ session = requests.session()
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64;6 x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36'}
 
+EMPTY_ARRAY = [EMPTY_VALUE] * 12
+EMPTY_ARRAY[0:3] = ['English']*3
 
 def scrape(app_id):
     # parse int to str
@@ -25,8 +27,7 @@ def scrape(app_id):
     lang__subtitles = []
 
     # handle when language table is none
-    language_rows = [] if language_table is None else language_table.find_all(
-        'tr')
+    language_rows = [] if language_table is None else language_table.find_all('tr')
 
     for row in language_rows:
         language_name = row.find('td', {'class': 'ellipsis'})
@@ -91,7 +92,7 @@ def scrape(app_id):
     recent_review_count = EMPTY_VALUE if recent_review_list is None or not recent_review_list[
         0] else recent_review_list[1][1:-1].split()[0]
 
-    return [lang__interface, lang__full_audio, lang__subtitles, positive_reviews, negative_reviews, total_reviews, overall_review_summary, m_content, award, curator, recent_review_summary, recent_review_count]
+    return [lang__interface, lang__full_audio, lang__subtitles, positive_reviews, negative_reviews, total_reviews, overall_review_summary,recent_review_count ,recent_review_summary ,m_content, award, curator]
 
 
 # inclusive both , 0 based
@@ -128,5 +129,5 @@ def main(start=0, end=0):
 if __name__ == "__main__":
     # main()
     # main(0, 2)
-    main(1000, 1004)
-    # print(scrape(730))
+    # main(1000, 1004)
+    print(scrape(730))
