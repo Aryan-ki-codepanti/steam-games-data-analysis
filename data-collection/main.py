@@ -1,8 +1,17 @@
 from getCurrentPlayers import fetch_current_players
 from getAppDetails import fetch_app_details
 from scraping_data_range_wise import scrape
-import csv,sys, time, os
 from datetime import datetime
+from time import sleep
+
+from utils import EMPTY_VALUE
+
+import csv,sys,  os
+
+# development
+from pprint import pprint
+
+DELAY_SECONDS = 1
 
 # inclusive both , 0 based
 # min : 0
@@ -23,10 +32,6 @@ def runner(save_file_name,start=0, end=0):
 
         app_id = 730
 
-        res = fetch_app_details(app_id)
-        print(res)
-        print(len(res))
-
         '''
             from us : [Index, AppID]
         
@@ -35,26 +40,36 @@ def runner(save_file_name,start=0, end=0):
             fetch_current_players : player_count
 
             scrape(12) : [lang__interface, lang__full_audio, lang__subtitles, positive_reviews, negative_reviews, total_reviews, overall_review_summary,recent_review_count ,recent_review_summary ,m_content, award, curator]
+        '''
         
 
+        print(f"SAVING DATA TO fetched-data/{save_file_name}.csv")
 
         with open(f"fetched-data/{save_file_name}.csv" , "w") as data_file:
             writer = csv.writer(data_file, delimiter="," , lineterminator="\n")
 
             for idx in range(start, end + 1):
                 app_id = app_ids[idx]
+                print(app_id)
                 try:
                     row = [idx, app_id]
                     row += fetch_app_details(app_id)
-                    # TODO
-                    print(app_id)
+                    row += [fetch_current_players(app_id)]
+                    row += scrape(app_id)
+
+                    print(f"WROTE index : {idx}, app : {app_id}")
                 except Exception as e:
+                    row = [idx, app_id]
+                    row += ([EMPTY_VALUE] * 35)
+                    row[-12:-9] = ['English'] * 3
                     print(f"ERROR at : {app_id}")
                     print(e)
                 finally:
-                    rec = next(reader, False)
-        '''
+                    # pprint(row)
+                    writer.writerow(row)                             
+                    sleep(DELAY_SECONDS)
 
+            print("meri taraf se  END, Kaam hogya na? !!!")
 
 
 def main():
