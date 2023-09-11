@@ -7,7 +7,7 @@ import csv
 from pprint import pprint
 
 
-def fetch_users(app_id):
+def fetch_app_details(app_id):
 
     app_id = str(app_id) if isinstance(app_id, int) else app_id
 
@@ -115,8 +115,8 @@ def main(n=1):
         for i in range(n):
             id = rec[0]
             print(id)
-            pprint(fetch_users(id))
-            fetch_users(id)
+            pprint(fetch_app_details(id))
+            fetch_app_details(id)
             print('\n\n\n')
 
             rec = next(reader)
@@ -124,6 +124,6 @@ def main(n=1):
 
 if __name__ == "__main__":
     main(6)
-    pprint(fetch_users(app_id=730))
-    pprint(fetch_users(app_id=1097880))
+    pprint(fetch_app_details(app_id=730))
+    pprint(fetch_app_details(app_id=1097880))
 
