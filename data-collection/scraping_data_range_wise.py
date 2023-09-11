@@ -125,7 +125,8 @@ def main(start=0, end=0):
                 rec = next(reader, False)
 
 
-# main()
-# main(0, 2)
-main(1000, 1004)
-# print(scrape(730))
+if __name__ == "__main__":
+    # main()
+    # main(0, 2)
+    main(1000, 1004)
+    # print(scrape(730))
