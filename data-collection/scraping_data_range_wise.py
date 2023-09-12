@@ -88,7 +88,6 @@ def scrape(app_id):
 
     
 
-    print(recent_review_summary,recent_review_count)
     return [lang__interface, lang__full_audio, lang__subtitles, positive_reviews, negative_reviews, total_reviews, overall_review_summary,recent_review_count ,recent_review_summary ,m_content, award, curator]
 
 
