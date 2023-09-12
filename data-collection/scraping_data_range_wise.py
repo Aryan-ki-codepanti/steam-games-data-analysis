@@ -67,7 +67,7 @@ def scrape(app_id):
         '.no_curators_followed'
     )
     recent_review_summary = soup.select_one(
-        '#review_histogram_recent_section > div.user_reviews_summary_bar > div'
+        '#review_histogram_recent_section > div.user_reviews_summary_bar > div > span.game_review_summary'
     )
     recent_review_count = soup.select_one(
         '#review_histogram_recent_section > div.user_reviews_summary_bar > div > span:nth-child(3)'
@@ -80,18 +80,15 @@ def scrape(app_id):
     total_reviews = EMPTY_VALUE if total_reviews is None else total_reviews.get_text(strip=True)[
         1:-1].split()[0]
     overall_review_summary = EMPTY_VALUE if overall_review_summary is None else overall_review_summary.get_text(strip=True)
+    recent_review_summary = EMPTY_VALUE if recent_review_summary is None else recent_review_summary.get_text(strip=True)
+    recent_review_count = EMPTY_VALUE if recent_review_count is None else recent_review_count.get_text(strip=True)[1:-1].split()[0]
     m_content = EMPTY_VALUE if m_content is None else m_content.get_text(strip=True)
     award = EMPTY_VALUE if award is None else award.get_text(strip=True)
     curator = EMPTY_VALUE if curator is None else curator.get_text(strip=True).strip()[0]
 
-    # recent review parsing
-    recent_review_list = None if recent_review_summary is None else recent_review_summary.get_text(strip=True).strip()[
-        16:].split('\n')
-    recent_review_summary = EMPTY_VALUE if recent_review_list is None or not recent_review_list[
-        0] else recent_review_list[0]
-    recent_review_count = EMPTY_VALUE if recent_review_list is None or not recent_review_list[
-        0] else recent_review_list[1][1:-1].split()[0]
+    
 
+    print(recent_review_summary,recent_review_count)
     return [lang__interface, lang__full_audio, lang__subtitles, positive_reviews, negative_reviews, total_reviews, overall_review_summary,recent_review_count ,recent_review_summary ,m_content, award, curator]
 
 
@@ -129,5 +126,8 @@ def main(start=0, end=0):
 if __name__ == "__main__":
     # main()
     # main(0, 2)
-    main(1000, 1004)
-    # print(scrape(730))
+    # main(1000, 1004)
+    # print(scrape(696360))
+    # print(scrape(560710))
+    scrape(696360)
+    scrape(560710)
