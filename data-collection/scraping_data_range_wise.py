@@ -73,19 +73,19 @@ def scrape(app_id):
         '#review_histogram_recent_section > div.user_reviews_summary_bar > div > span:nth-child(3)'
     )
     # Parsing text and adding checks to avoid  errors for None.<property_access>[()]
-    positive_reviews = EMPTY_VALUE if positive_reviews is None else positive_reviews.get_text()[
+    positive_reviews = EMPTY_VALUE if positive_reviews is None else positive_reviews.get_text(strip=True)[
         1:-1]
-    negative_reviews = EMPTY_VALUE if negative_reviews is None else negative_reviews.get_text()[
+    negative_reviews = EMPTY_VALUE if negative_reviews is None else negative_reviews.get_text(strip=True)[
         1:-1]
-    total_reviews = EMPTY_VALUE if total_reviews is None else total_reviews.get_text()[
+    total_reviews = EMPTY_VALUE if total_reviews is None else total_reviews.get_text(strip=True)[
         1:-1].split()[0]
-    overall_review_summary = EMPTY_VALUE if overall_review_summary is None else overall_review_summary.get_text()
-    m_content = EMPTY_VALUE if m_content is None else m_content.get_text()
-    award = EMPTY_VALUE if award is None else award.get_text()
-    curator = EMPTY_VALUE if curator is None else curator.get_text().strip()[0]
+    overall_review_summary = EMPTY_VALUE if overall_review_summary is None else overall_review_summary.get_text(strip=True)
+    m_content = EMPTY_VALUE if m_content is None else m_content.get_text(strip=True)
+    award = EMPTY_VALUE if award is None else award.get_text(strip=True)
+    curator = EMPTY_VALUE if curator is None else curator.get_text(strip=True).strip()[0]
 
     # recent review parsing
-    recent_review_list = None if recent_review_summary is None else recent_review_summary.get_text().strip()[
+    recent_review_list = None if recent_review_summary is None else recent_review_summary.get_text(strip=True).strip()[
         16:].split('\n')
     recent_review_summary = EMPTY_VALUE if recent_review_list is None or not recent_review_list[
         0] else recent_review_list[0]
@@ -129,5 +129,5 @@ def main(start=0, end=0):
 if __name__ == "__main__":
     # main()
     # main(0, 2)
-    # main(1000, 1004)
-    print(scrape(730))
+    main(1000, 1004)
+    # print(scrape(730))

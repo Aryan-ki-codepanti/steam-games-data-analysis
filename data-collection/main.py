@@ -45,7 +45,7 @@ def runner(save_file_name,start=0, end=0):
 
         print(f"SAVING DATA TO fetched-data/{save_file_name}.csv")
 
-        with open(f"fetched-data/{save_file_name}.csv" , "w") as data_file:
+        with open(f"fetched-data/{save_file_name}.csv" , "w", encoding="utf8", buffering=1) as data_file:
             writer = csv.writer(data_file, delimiter="," , lineterminator="\n")
 
             for idx in range(start, end + 1):
