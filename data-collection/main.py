@@ -11,11 +11,12 @@ import csv,sys,  os
 # development
 from pprint import pprint
 
-DELAY_SECONDS = 1
+DELAY_SECONDS = .1
+LIMIT = 77003
 
 # inclusive both , 0 based
 # min : 0
-# max : 76986
+# max : LIMIT
 def runner(save_file_name,start=0, end=0):
     with open("data/apps.csv", "r", encoding="utf8") as f:
         reader = csv.reader(f)
@@ -33,6 +34,7 @@ def runner(save_file_name,start=0, end=0):
         app_id = 730
 
         '''
+            Index,AppID,Title,Initial_Price,Final_Price,Discount_Percent,Developers,Publishers,Genres,Categories,Required_Age,Achievements,Release_Date,Metacritic_score,DLC_Flag,Win_Flag,Mac_Flag,Linux_Flag,OS,Processor,Memory,Graphics,DirectX,Storage,Current_Players,Interface_Languages,Audio_Languages,Subtitle_Languages,Positive_Reviews,Negative_Reviews,Total_Reviews,Overall_Review_Summary,Recent_Reviews,Recent_Review_Summary,Mature_Content_Desc,Awards,Curators
             from us : [Index, AppID]
         
             fetch_app_details(22) : [title, initial_price, final_price, discount_percent, developers, publishers, genres, categories, required_age, achievements, release_date, metacritic_score, dlc_flag, win_flag, mac_flag, linux_flag] + (pc_requirements) [os, processor , memory , graphics , directX , storage]
@@ -96,7 +98,7 @@ def main():
     start = int(start)
     end = int(end)
 
-    if start > end or start < 0 or end > 76986: 
+    if start > end or start < 0 or end > LIMIT: 
         print("Invalid start or/and end argument(s) value")
         return
     
