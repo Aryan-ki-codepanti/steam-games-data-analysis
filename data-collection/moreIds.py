@@ -24,9 +24,9 @@ def new_info(ids):
             rec = next(reader, False)
     
     # Filter new ids
-    new_ids = [ id_ for id_ in  ids if id_ not in previous_ids ]
-
-    return new_ids, last_idx
+    ids = set(ids)
+    new_ids = ids.difference(previous_ids)
+    return new_ids, int(last_idx)
 
 def getIds(url: str):
 
@@ -45,6 +45,14 @@ def getIds(url: str):
         ids.append(id_)
 
     return ids
+
+def write_new_ids(ids, last_idx):
+    with open("data/new_ids.csv", "a", buffering=1) as f:
+        writer = csv.writer(f, delimiter=",", lineterminator="\n")
+        for id_ in ids:
+            last_idx += 1
+            writer.writerow([last_idx, id_])
+            
 
 def runner(url : str):
     ids = getIds(url)
@@ -66,7 +74,13 @@ if __name__ == "__main__":
         urls.append(f"https://steam250.com/{i}")
 
 
+    last_idx = 77003
     for url in urls:
-        runner(url)
+        ids = getIds(url)
+        ids, not_used_idx = new_info(ids)
 
+        print(ids)
+        write_new_ids(ids, last_idx)
+        last_idx += len(ids)
+        
     pass
