@@ -61,8 +61,8 @@ def runner(url : str):
     print(f"New ids : {ids}")
     print(f"Count: {len(ids)}\n")
 
-if __name__ == "__main__":
 
+def main():
     urls = [
         "https://steam250.com/top250",
         "https://steam250.com/hidden_gems",
@@ -82,5 +82,27 @@ if __name__ == "__main__":
         print(ids)
         write_new_ids(ids, last_idx)
         last_idx += len(ids)
-        
+
+def check_amongst():
+    with open("data/new_ids.csv" , "r") as f:
+        reader = csv.reader(f)
+        rec = next(reader, False)
+        ids = []
+        while rec:
+            ids.append(rec[1])
+            rec = next(reader, False)
+        print(ids)
+
+        print(f"Now : {len(ids)}")
+        print(f"Unique: {len(set(ids))}")
+
+        ids = set(ids)
+        write_new_ids(ids, 77003)
+
+
+if __name__ == "__main__":
+
+    # 77044 
+    check_amongst()
     pass
+
