@@ -12,7 +12,7 @@ import csv,sys,  os
 from pprint import pprint
 
 DELAY_SECONDS = .1
-LIMIT = 77044 
+LIMIT = 82000 
 
 # inclusive both , 0 based
 # min : 0
